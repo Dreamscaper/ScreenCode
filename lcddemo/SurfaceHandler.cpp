@@ -98,7 +98,7 @@ void SurfaceHandler::clearDisplay()
 		{
 			if (y == 10 && x == 1)
 			{
-				frameBuffer[y][x] = 0b11111111;
+				frameBuffer[y][x] = 0b10101010;
 			}
 			else
 			{
