@@ -73,6 +73,7 @@
     <None Include="release.mak" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Font.h" />
     <ClInclude Include="MemoryLCD.h" />
     <ClInclude Include="SurfaceHandler.h" />
   </ItemGroup>
