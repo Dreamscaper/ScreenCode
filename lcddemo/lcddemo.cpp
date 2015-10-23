@@ -12,10 +12,11 @@ bool dosomething = true;
 int main() {
 	surface.clearDisplay();
 	surface.clearLineBuffer();
-	surface.addRectangleToBuffer(-5,-5,105,105, false);
-	surface.addRectangleToBuffer(10, 10, 7, 7, true);
-	surface.addRectangleToBuffer(50, 50, 20, 20, true);
-	surface.addRectangleToBuffer(48, 48, 6, 7, false);
+	surface.addRectangleToBuffer(0,0,71,71, false);
+	surface.addRectangleToBuffer(30, 40, 23, 18, false);
+	//surface.addRectangleToBuffer(6, 6, 5, 56, false);
+
+
 	surface.drawDisplay();
 	return 0;
 }

@@ -59,57 +59,77 @@ void SurfaceHandler::addRectangleToBuffer(int left, int top, int width, int heig
 		return; ////Even a solitary pixel is two-dimensional! 
 	}
 	
-	int startByteIndex = ceil((left + 1) / 8.0) - 1;
-	int bytesNeeded = ceil(width / 8.0);
-	int endByteIndex = startByteIndex + bytesNeeded - 1;
-	int shiftValue;
+	int startByteIndex = (((left + 1) / 8) + (((left + 1) % 8 != 0) ? 0 : 1));
+	//int bytesNeeded = (width / 8) + ((((((left + 1) % 8) == width % 8) || (((SCREENWIDTH - (left + width + 1)) % 8) == width % 8)) ? ((width % 8 == 0) ? 0 : 1) : 2));
+	//int startByteIndex = ceil((left + 1) / 8.0) - 1;
+	//int bytesNeeded = ceil(width / 8.0);
 	
+	//int shiftValue;
+	
+	int leftShiftValue = ((left) % 8);
+	if(leftShiftValue < 0)
+	{
+		leftShiftValue = 0;	
+	}
+	int rightShiftValue = ((SCREENWIDTH - (width + left)) % 8);                                  
+	if(rightShiftValue < 0)
+	{
+		rightShiftValue = 0;	
+	}
+	int bytesNeeded;
+	if (width / 8 == 0)
+	{
+		bytesNeeded = 1;
+	}
+	else
+	{
+		bytesNeeded = (width / 8) + ((leftShiftValue == 0 && rightShiftValue == 0) ? 0 : ((leftShiftValue == 0 || rightShiftValue == 0) ? 1 : 2));
+	}
+	int endByteIndex = startByteIndex + bytesNeeded - 1;                                
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < bytesNeeded; x++)
 		{
 			if (x == 0) ///Acting on the first byte in a line
 			{
-				shiftValue = ((left + 1) % 8) - 1;
+				//shiftValue = ((left + 1) % 8) - 1;
 				
 				if (invertStatus)
 				{
-					SurfaceHandler::lineBuffer[startByteIndex] = (0b11111111 >> shiftValue) | ((frameBuffer[top + y][startByteIndex]) & ~(0b11111111 >> shiftValue));
+					SurfaceHandler::lineBuffer[startByteIndex] = (0b11111111 >> leftShiftValue) | ((frameBuffer[top + y][startByteIndex]) & (0b11111111 << (8 - leftShiftValue)));
 				}
 				else
 				{
-					SurfaceHandler::lineBuffer[startByteIndex] = ~(0b11111111 >> shiftValue) | ((frameBuffer[top + y][startByteIndex]) & ~(0b11111111 >> shiftValue));
+					SurfaceHandler::lineBuffer[startByteIndex] = (~(0b11111111 >> leftShiftValue)) ^ ((~(frameBuffer[top + y][startByteIndex])) &  (~(0b11111111 >> leftShiftValue)) ); //| ((frameBuffer[top + y][startByteIndex]) & (0b11111111 << (8 - leftShiftValue)));
 				}
-				
-				if (x == bytesNeeded - 1)
+				if (x == (bytesNeeded - 1))
 				{
-					shiftValue = (SCREENWIDTH - (left + width)) % 8;
-					if (!invertStatus)
+					if (invertStatus)
 					{
-						SurfaceHandler::lineBuffer[startByteIndex] = ~(~SurfaceHandler::lineBuffer[startByteIndex] ^ (~(0b11111111 << shiftValue) & lineBuffer[endByteIndex]));
+						SurfaceHandler::lineBuffer[endByteIndex] = (0b11111111 << rightShiftValue) | ((SurfaceHandler::lineBuffer[endByteIndex]) & (0b11111111 >> (8 - rightShiftValue)));
 					}
 					else
 					{
-						SurfaceHandler::lineBuffer[startByteIndex] = ~(~SurfaceHandler::lineBuffer[startByteIndex] & (~(0b11111111 << shiftValue) & lineBuffer[endByteIndex]));
+						SurfaceHandler::lineBuffer[endByteIndex] = (~(0b11111111 << rightShiftValue)) ^ ((~(SurfaceHandler::lineBuffer[endByteIndex])) &  (~(0b11111111 << rightShiftValue)) );////| ((SurfaceHandler::lineBuffer[endByteIndex]) & (0b11111111 >> (8 - rightShiftValue)));
 					}
-					
 				}
 				SurfaceHandler::frameBuffer[top + y][startByteIndex] = lineBuffer[startByteIndex];
 			}
-			else if (x == bytesNeeded - 1)
+			else if (x == (bytesNeeded - 1))
 			{
-				shiftValue = (SCREENWIDTH - (left + width)) % 8;
+				//shiftValue = ((SCREENWIDTH - (left + width + 1)) % 8);
+
 				if (invertStatus)
 				{
-					SurfaceHandler::lineBuffer[endByteIndex] = (0b11111111 << shiftValue) | ((frameBuffer[top + y][endByteIndex]) & ~(0b11111111 << shiftValue));
+					SurfaceHandler::lineBuffer[endByteIndex] = (0b11111111 << rightShiftValue) | ((frameBuffer[top + y][endByteIndex]) & (0b11111111 >> (8 - rightShiftValue)));
 				}
 				else
 				{
-					SurfaceHandler::lineBuffer[endByteIndex] = ~(0b11111111 << shiftValue) | ((frameBuffer[top + y][endByteIndex]) & ~(0b11111111 << shiftValue));
+					SurfaceHandler::lineBuffer[endByteIndex] = (~(0b11111111 << rightShiftValue)) ^ ((~(frameBuffer[top + y][endByteIndex])) &   (~(0b11111111 << rightShiftValue)));//| ((frameBuffer[top + y][endByteIndex]) & (0b11111111 >> (8 - rightShiftValue)));
 				}
 				SurfaceHandler::frameBuffer[top + y][endByteIndex] = lineBuffer[endByteIndex];
 			}
-			if(x != bytesNeeded - 1 && x != 0)
+			else
 			{
 				if (invertStatus)
 				{
@@ -140,7 +160,6 @@ void SurfaceHandler::clearDisplay()
 		{
 				frameBuffer[y][x] = 0b11111111;
 		}
-		cout << endl;
 	}
 	
 	memLcd.clearDisplay();
@@ -150,7 +169,7 @@ void SurfaceHandler::clearLineBuffer()
 {
 	for (int x = 0; x < SCREENWIDTH / 8; x++)
 	{
-		lineBuffer[x] = 0b00000000;
+		lineBuffer[x] = 0b11111111;
 	}
 	memLcd.clearLineBuffer();
 }
