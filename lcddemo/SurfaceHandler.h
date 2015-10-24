@@ -24,6 +24,8 @@ class SurfaceHandler
 	
 	MemoryLCD memLcd;
 	
+	unsigned char MASK = 0b11111111;
+	
 	unsigned char lineBuffer[SCREENWIDTH / 8];
 	unsigned char frameBuffer[SCREENHEIGHT][SCREENWIDTH / 8];
 	unsigned char dirtyBits[12];
@@ -34,7 +36,7 @@ class SurfaceHandler
 
 	void addCircleToBuffer(int center, bool invertStatus);
 	void addRectangleToBuffer(int left, int top, int width, int height, bool invertStatus);
-	void addBitmap(bool invertStatus);
+	void addBitmapToBuffer(int left, int top, int width, int height, bool invertStatus, unsigned char bitmap []);
 
 	void drawDisplay();
 	void clearDisplay();

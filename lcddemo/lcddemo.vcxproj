@@ -64,6 +64,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lcddemo.cpp" />
+    <ClCompile Include="ConsoleFont.cpp" />
     <ClCompile Include="MemoryLCD.cpp" />
     <ClCompile Include="SurfaceHandler.cpp" />
   </ItemGroup>
@@ -73,6 +74,7 @@
     <None Include="release.mak" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleFont.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="MemoryLCD.h" />
     <ClInclude Include="SurfaceHandler.h" />

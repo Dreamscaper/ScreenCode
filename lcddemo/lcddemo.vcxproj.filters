@@ -28,6 +28,9 @@
     <ClCompile Include="SurfaceHandler.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="ConsoleFont.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -46,6 +49,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleFont.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

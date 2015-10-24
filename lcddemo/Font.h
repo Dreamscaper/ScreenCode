@@ -1,10 +1,6 @@
 #ifndef __FONT_H__
 #define __FONT_H__
  
- 
-typedef unsigned char uint8_t;
- 
- 
 typedef struct
 {
 	int width; // Character width in bits.
@@ -16,9 +12,12 @@ FONT_CHAR_INFO;
 typedef struct
 {
 	int height; // Character height in bits.
+	int width; //Character width in bits.
 	char start_char; // Start character.
+	char end_char;
+	int space_width;
 	const FONT_CHAR_INFO *p_character_descriptor; // Character decriptor array.
-	const uint8_t *p_character_bitmaps; // Character bitmap array.
+	const unsigned char *p_character_bitmaps; // Character bitmap array.
 }
 FONT_INFO;
  
