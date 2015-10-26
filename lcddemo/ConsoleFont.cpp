@@ -1359,11 +1359,26 @@ int ConsoleFont::getCharacterWidth()
 {
 	return font_width;
 }
+
+char ConsoleFont::getStartCharacter()
+{
+	return lucidaConsole_8ptFontInfo.start_char;
+}
+
+char ConsoleFont::getEndCharacter()
+{
+	return lucidaConsole_8ptFontInfo.end_char;
+}
 unsigned char* ConsoleFont::getBitmap(char character)
 {
+	if (!((character - lucidaConsole_8ptFontInfo.start_char) >= 0 && character <= lucidaConsole_8ptFontInfo.end_char))
+	{
+		character = '!';
+	}
+
 	for (int i = 0; i < lucidaConsole_8ptFontInfo.height;i++)
 	{
-		ConsoleFont::letterBitmap[i] = lucidaConsole_8ptBitmaps[lucidaConsole_8ptDescriptors[(((character - lucidaConsole_8ptFontInfo.start_char) >= 0 && character <= lucidaConsole_8ptFontInfo.end_char) ? (character - lucidaConsole_8ptFontInfo.start_char) : 0)].offset + i];
+		ConsoleFont::letterBitmap[i] = lucidaConsole_8ptBitmaps[lucidaConsole_8ptDescriptors[character - lucidaConsole_8ptFontInfo.start_char].offset + i];
 	}
 	return ConsoleFont::letterBitmap;
 }

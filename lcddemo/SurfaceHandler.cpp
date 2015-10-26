@@ -11,6 +11,7 @@ SurfaceHandler::SurfaceHandler() :  memLcd(SCS, DISP, EXTCOMIN, true)
 	clearLineBuffer();
 }
 
+
 void SurfaceHandler::addCircleToBuffer(int center, bool invertStatus)
 {
 
@@ -277,19 +278,17 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 				}
 				else
 				{
-					//SurfaceHandler::lineBuffer[startByteIndex] = ((MASK >> leftShiftValue) & ((~bitmap[y]) >> leftShiftValue)) | ((frameBuffer[top + y][startByteIndex]) & (MASK << (8 - leftShiftValue)));
 					SurfaceHandler::lineBuffer[startByteIndex] = ((((MASK >> leftShiftValue) & ((~bitmap[y]) >> leftShiftValue)) ^ ((~(frameBuffer[top + y][startByteIndex])) &  (MASK << (8 - leftShiftValue)))) ^ ((~(MASK >> leftShiftValue)) & frameBuffer[top + y][startByteIndex])) & ((MASK >> leftShiftValue) | frameBuffer[top + y][startByteIndex]);
 				}
 				if (x == (bytesNeeded - 1))
 				{
 					if (invertStatus)
 					{
-						SurfaceHandler::lineBuffer[startByteIndex] = ((MASK << rightShiftValue) & (bitmap[y] << rightShiftValue)) | ((SurfaceHandler::lineBuffer[startByteIndex]) & (MASK >> (8 - rightShiftValue)));//SurfaceHandler::lineBuffer[endByteIndex] = (((MASK << rightShiftValue) & (bitmap[y] >>  (8 - rightShiftValue))) | ((MASK >> leftShiftValue) & (bitmap[y] << leftShiftValue))) | ((frameBuffer[top + y][startByteIndex]) & ((MASK << (rightShiftValue)) & (MASK >> leftShiftValue)));
+						SurfaceHandler::lineBuffer[startByteIndex] = ((MASK << rightShiftValue) & (bitmap[y] << rightShiftValue)) | ((SurfaceHandler::lineBuffer[startByteIndex]) & (MASK >> (8 - rightShiftValue)));
 					}
 					else
 					{
 						SurfaceHandler::lineBuffer[startByteIndex] = ((MASK << rightShiftValue) & ((~bitmap[y]) << rightShiftValue)) ^ (((SurfaceHandler::lineBuffer[startByteIndex])) & (MASK >> (8 - rightShiftValue)));
-						//SurfaceHandler::lineBuffer[endByteIndex] = (~((MASK << rightShiftValue) & (MASK >> leftShiftValue) & bitmap[y])) ^ ((~(frameBuffer[top + y][startByteIndex])) &  (~((MASK << rightShiftValue) & (MASK >> leftShiftValue))))  | ~(bitmap[y] & (MASK << (8 - rightShiftValue)));
 					}
 				}
 				SurfaceHandler::frameBuffer[top + y][startByteIndex] = lineBuffer[startByteIndex];

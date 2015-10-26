@@ -12,6 +12,8 @@ class ConsoleFont
 	int getCharacterHeight();
 	int getSpaceCharacterWidth();
 	int getCharacterWidth();
+	char getStartCharacter();
+	char getEndCharacter();
 	unsigned char* getBitmap(char character);
 	private:
 	const int font_width = lucidaConsole_8ptFontInfo.width;
