@@ -11,8 +11,8 @@ ConsoleFont font;
 int main() {
 	//surface.addRectangleToBuffer(0, 0, 20, 20, false);
 	//surface.addRectangleToBuffer(9,9,15,6, true);
-	//surface.addRectangleToBuffer(0, 0, 50, 50, false);
-	surface.addBitmapToBuffer(25,25,font.getCharacterWidth(),font.getCharacterHeight(), false, font.getBitmap('A'));
+	surface.addRectangleToBuffer(0, 0, 70, 70, false);
+	surface.addBitmapToBuffer(46,46,font.getCharacterWidth(),font.getCharacterHeight(), true, font.getBitmap('A'));
 	surface.drawDisplay();
 	return 0;
 }

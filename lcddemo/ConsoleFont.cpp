@@ -1337,7 +1337,7 @@ const FONT_CHAR_INFO lucidaConsole_8ptDescriptors [] =
 const FONT_INFO lucidaConsole_8ptFontInfo =
 {
 	11, //  Character height
-	7, //Character Width
+	8, //Character Width
 	'!', //  Start character
 	'~', //  End character
 	2, //  Width, in pixels, of space character
