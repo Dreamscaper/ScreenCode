@@ -1,16 +1,30 @@
 #include "SurfaceHandler.h"
-#include <math.h>
 #include <iostream>
-#include <unistd.h>
 
-using namespace std;
 
-SurfaceHandler::SurfaceHandler() :  memLcd(SCS, DISP, EXTCOMIN, true)
+// use the pin name/number, not the number based on physical header position
+static char SCS       = 12;      // Use any pin except the dedicated SPI SS pins?
+static char DISP      = 6;      // Use any non-specialised GPIO pin
+static char EXTCOMIN  = 25;	     // Use any non-specialised GPIO pin
+
+
+SurfaceHandler::SurfaceHandler()
+	: memLcd(SCS, DISP, EXTCOMIN, true)
+	, MASK(0b11111111)
 {
 	clearDisplay();
 	clearLineBuffer();
 }
 
+int SurfaceHandler::getScreenWidth()
+{
+	return SCREENWIDTH;
+}
+
+int SurfaceHandler::getScreenHeight()
+{
+	return SCREENHEIGHT;
+}
 
 void SurfaceHandler::addCircleToBuffer(int center, bool invertStatus)
 {
@@ -55,7 +69,6 @@ void SurfaceHandler::addRectangleToBuffer(int left, int top, int width, int heig
 	
 	if (width <= 0 || height <= 0)
 	{
-		cout << "Even a solitary pixel is two dimensional!" << endl;
 		return; ////Even a solitary pixel is two-dimensional! 
 	}
 	
@@ -208,7 +221,6 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 	
 	if (width <= 0 || height <= 0)
 	{
-		cout << "Even a solitary pixel is two dimensional!" << endl;
 		return; ////Even a solitary pixel is two-dimensional! 
 	}
 	

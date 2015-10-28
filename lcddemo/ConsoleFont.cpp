@@ -6,8 +6,6 @@
 
 #include "ConsoleFont.h"
 
-unsigned char ConsoleFont::letterBitmap[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
 const unsigned char lucidaConsole_8ptBitmaps [] = 
 {
 	// @0 '!' (7 pixels wide)
@@ -1344,41 +1342,3 @@ const FONT_INFO lucidaConsole_8ptFontInfo =
 	lucidaConsole_8ptDescriptors, //  Character descriptor array
 	lucidaConsole_8ptBitmaps, //  Character bitmap array
 };
-
-int ConsoleFont::getCharacterHeight()
-{
-	return lucidaConsole_8ptFontInfo.height;
-}
-
-int ConsoleFont::getSpaceCharacterWidth()
-{
-	return lucidaConsole_8ptFontInfo.space_width;
-}
-
-int ConsoleFont::getCharacterWidth()
-{
-	return font_width;
-}
-
-char ConsoleFont::getStartCharacter()
-{
-	return lucidaConsole_8ptFontInfo.start_char;
-}
-
-char ConsoleFont::getEndCharacter()
-{
-	return lucidaConsole_8ptFontInfo.end_char;
-}
-unsigned char* ConsoleFont::getBitmap(char character)
-{
-	if (!((character - lucidaConsole_8ptFontInfo.start_char) >= 0 && character <= lucidaConsole_8ptFontInfo.end_char))
-	{
-		character = '!';
-	}
-
-	for (int i = 0; i < lucidaConsole_8ptFontInfo.height;i++)
-	{
-		ConsoleFont::letterBitmap[i] = lucidaConsole_8ptBitmaps[lucidaConsole_8ptDescriptors[character - lucidaConsole_8ptFontInfo.start_char].offset + i];
-	}
-	return ConsoleFont::letterBitmap;
-}

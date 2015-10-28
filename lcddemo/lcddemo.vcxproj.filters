@@ -31,6 +31,12 @@
     <ClCompile Include="ConsoleFont.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -52,6 +58,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleFont.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

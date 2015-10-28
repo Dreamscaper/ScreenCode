@@ -63,10 +63,12 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="lcddemo.cpp" />
     <ClCompile Include="ConsoleFont.cpp" />
     <ClCompile Include="MemoryLCD.cpp" />
     <ClCompile Include="SurfaceHandler.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="debug.mak" />
@@ -78,6 +80,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="MemoryLCD.h" />
     <ClInclude Include="SurfaceHandler.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

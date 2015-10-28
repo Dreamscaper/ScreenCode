@@ -21,5 +21,23 @@ typedef struct
 }
 FONT_INFO;
  
+class Font
+{
+protected:
+	const FONT_INFO &fontInfo;
+	
+public:
+	Font(const FONT_INFO &font);
+	
+	int getCharacterHeight();
+	int getSpaceCharacterWidth();
+	int getCharacterWidth();
+	char getStartCharacter();
+	char getEndCharacter();
+	unsigned char* getBitmap(char character);
+	
+private:
+	unsigned char *letterBitmap;
+};
  
 #endif // __FONT_H__
