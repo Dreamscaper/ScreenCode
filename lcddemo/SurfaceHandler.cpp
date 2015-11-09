@@ -321,7 +321,7 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 			{
 				if (invertStatus)
 				{
-					lineBuffer[startByteIndex + x] = ~(bitmap[y]);
+					lineBuffer[startByteIndex + x] = ~(bitmap[y]) ;
 				}
 				else
 				{

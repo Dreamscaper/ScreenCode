@@ -45,4 +45,4 @@ class SurfaceHandler
 	void clearDisplay();
 	void clearLineBuffer();
 };
-#endif
+#endif

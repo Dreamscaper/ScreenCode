@@ -11,25 +11,40 @@ Window::Window(SurfaceHandler& surfac, Font& fnt, int wposX, int wposY, int widt
 	
 	clearWindow();
 	
-	addTextToLine("Hellooooooooooooooooooooooooooo", 3, 2, true);
-	addTextToLine("World!", 5, 1, true);
-	surface.drawDisplay();
+	//addTextToLine("Hellooooooooooooooooooooooooooo", 3, 2, true);
+	//addTextToLine("World!", 5, 1, true);
 }
 
-void Window::addTextToLine(const char* thingToSay, int row, int column, bool invert)
+void Window::addTextToLine(const char* thingToSay, int cursorX, int cursorY, bool invert)
 {
 	int i = 0;
-	int numColumns = (surface.getScreenWidth() / font.getCharacterWidth()) + ((surface.getScreenWidth() % font.getCharacterWidth() == 0) ? 0 : 1);
-		
-	while (thingToSay[i] != '\0' && (numColumns - column > 0 && column >= 0))
+	//int numSpaces = 0;
+	
+	/*while (thingToSay[i] != '\0')
 	{
-		if (thingToSay[i] - font.getStartCharacter() >= 0 && thingToSay[i] < font.getEndCharacter())
+		if (thingToSay[i] == ' ')
 		{
-			surface.addBitmapToBuffer((column * font.getCharacterWidth()) + windowPosX, (row * font.getCharacterHeight()) + windowPosY, font.getCharacterWidth(), font.getCharacterHeight(), invert, font.getBitmap(thingToSay[i]));
+			numSpaces++;
 		}
-		column++;
+		i++;
+	}*/
+	
+	//int stringWidth = (((i - numSpaces) + 1) * font.getCharacterWidth('A')) + (numSpaces * font.getCharacterWidth(' '));
+	
+	//int numColumns = (surface.getScreenWidth() / stringWidth) + ((surface.getScreenWidth() % stringWidth == 0) ? 0 : 1);
+		
+	while (thingToSay[i] != '\0')
+	{
+		surface.addBitmapToBuffer(cursorX + windowPosX, cursorY + windowPosY, font.getCharacterWidth(thingToSay[i]), font.getCharacterHeight(), invert, font.getBitmap(thingToSay[i]));
+		cursorX += font.getCharacterWidth(thingToSay[i]);
 		i++;
 	}
+	/*while (thingToSay[i] != '\0' && (numColumns - column > 0 && column >= 0))
+	{
+		surface.addBitmapToBuffer((column * font.getCharacterWidth(thingToSay[i])) + windowPosX, (cursorY * font.getCharacterHeight()) + windowPosY, font.getCharacterWidth(thingToSay[i]), font.getCharacterHeight(), invert, font.getBitmap(thingToSay[i]));
+		column++;
+		i++;
+	}*/
 }
 
 void Window::clearWindow()
@@ -42,4 +57,9 @@ void Window::clearWindow()
 	{
 		surface.addRectangleToBuffer(windowPosX, windowPosY, surface.getScreenWidth() - windowPosX, surface.getScreenHeight() - windowPosY, true);
 	}
+}
+
+void Window::displayWindow()
+{
+	surface.drawDisplay();
 }

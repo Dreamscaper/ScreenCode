@@ -15,6 +15,7 @@ class Window
 	Window(SurfaceHandler &surfacehandler, Font &consolefont, int windowPositionX, int windowPositionY, int width, int height, int backgroundColor);
 	void addTextToLine(const char*, int, int, bool);
 	void clearWindow();
+	void displayWindow();
 	private:
 	Font &font;
 	SurfaceHandler &surface;

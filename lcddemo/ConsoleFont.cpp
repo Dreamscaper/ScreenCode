@@ -1338,7 +1338,7 @@ const FONT_INFO lucidaConsole_8ptFontInfo =
 	8, //Character Width
 	'!', //  Start character
 	'~', //  End character
-	2, //  Width, in pixels, of space character
+	8, //  Width, in pixels, of space character
 	lucidaConsole_8ptDescriptors, //  Character descriptor array
 	lucidaConsole_8ptBitmaps, //  Character bitmap array
 };

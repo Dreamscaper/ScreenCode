@@ -13,11 +13,24 @@ int Font::getCharacterHeight()
 
 int Font::getSpaceCharacterWidth()
 {
+	if (fontInfo.space_width > 8)
+	{
+		return 8;
+	}
+	else if (fontInfo.space_width < 0)
+	{
+		return 0;
+	}
+	
 	return fontInfo.space_width;
 }
 
-int Font::getCharacterWidth()
+int Font::getCharacterWidth(char character)
 {
+	if (character == ' ')
+	{
+		return getSpaceCharacterWidth();
+	}
 	return fontInfo.width;
 }
 
@@ -32,14 +45,22 @@ char Font::getEndCharacter()
 }
 unsigned char* Font::getBitmap(char character)
 {
-	if (!((character - fontInfo.start_char) >= 0 && character <= fontInfo.end_char))
+	if (character == ' ')
+	{
+		for (int i = 0; i < fontInfo.height;i++)
+		{
+			letterBitmap[i] = 0b00000000;
+		}
+		return letterBitmap;
+	}
+	else if (!((character - getStartCharacter()) >= 0 && character <= getEndCharacter()))
 	{
 		character = '!';
 	}
-
+	
 	for (int i = 0; i < fontInfo.height;i++)
 	{
-		letterBitmap[i] = fontInfo.p_character_bitmaps[fontInfo.p_character_descriptor[character - fontInfo.start_char].offset + i];
+		letterBitmap[i] = fontInfo.p_character_bitmaps[fontInfo.p_character_descriptor[character - getStartCharacter()].offset + i];
 	}
 	return letterBitmap;
 }

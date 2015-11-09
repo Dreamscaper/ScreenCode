@@ -7,6 +7,7 @@ Font font(lucidaConsole_8ptFontInfo);
 
 int main()
 {
-	Window window(surface, font, 10,10,surface.getScreenWidth(), surface.getScreenHeight(), 0);
-	window.addTextToLine("Hello", 1, 1, true);
+	Window window(surface, font, 10,10,surface.getScreenWidth(), surface.getScreenHeight(), 1);
+	//window.addTextToLine("S p a ce", 8,8, true);
+	window.displayWindow();
 }
