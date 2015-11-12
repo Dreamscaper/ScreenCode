@@ -37,6 +37,9 @@
     <ClCompile Include="Font.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="BitmapImages.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -61,6 +64,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapImages.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

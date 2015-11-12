@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := Font.cpp lcddemo.cpp ConsoleFont.cpp MemoryLCD.cpp SurfaceHandler.cpp Window.cpp
+SOURCEFILES := BitmapImages.cpp Font.cpp lcddemo.cpp ConsoleFont.cpp MemoryLCD.cpp SurfaceHandler.cpp Window.cpp
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 
