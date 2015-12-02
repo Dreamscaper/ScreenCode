@@ -40,7 +40,9 @@ class SurfaceHandler
 	void addCircleToBuffer(int center, bool invertStatus);
 	void addRectangleToBuffer(int left, int top, int width, int height, bool invertStatus);
 	void addBitmapToBuffer(int left, int top, int width, int height, bool invertStatus, unsigned char bitmap []);
-
+	void clipLeft(unsigned char bitmap [], int amount, int height);
+	void clipRight(unsigned char bitmap [], int amount, int height);
+	bool findTrueCoordinates(int& left, int& top, int offsetX, int offsetY, int surfaceWidth, int surfaceHeight, int& bitmapWidth, int& bitmapHeight);
 	void drawDisplay();
 	void clearDisplay();
 	void clearLineBuffer();

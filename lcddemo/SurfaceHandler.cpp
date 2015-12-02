@@ -183,7 +183,7 @@ void SurfaceHandler::addRectangleToBuffer(int left, int top, int width, int heig
 }
 
 void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height, bool invertStatus, unsigned char bitmap [])
-{
+{	
 	if (width <= 0 || height <= 0)
 	{
 		return; ////Even a solitary pixel is two-dimensional! 
@@ -331,6 +331,69 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 		}
 		
 	}
+}
+
+void SurfaceHandler::clipLeft(unsigned char* bitmap, int amount, int height)
+{
+	for (int i = 0; i < height; i++)
+	{
+		bitmap[i] = bitmap[i] >> amount;
+	}
+	
+}
+
+void SurfaceHandler::clipRight(unsigned char* bitmap, int amount, int height)
+{
+	for (int i = 0; i < height; i++)
+	{
+		bitmap[i] = bitmap[i] << amount;
+	}
+}
+/*void SurfaceHandler::clipRight()
+{
+	
+}*/
+bool SurfaceHandler::findTrueCoordinates(int& left, int& top, int offsetX, int offsetY, int surfaceWidth, int surfaceHeight, int& bitmapWidth, int& bitmapHeight)
+{
+	if (bitmapWidth <= 0 || bitmapHeight <= 0)
+	{
+		return false; ////Even a solitary pixel is two-dimensional! 
+	}
+	if (left < offsetX)
+	{
+		bitmapWidth = (left + bitmapWidth) - offsetX;
+		left = offsetX;
+	}
+	else if (left > surfaceWidth + offsetX)
+	{
+		return false;
+	}
+	
+	if (top < offsetY)
+	{
+		bitmapHeight = (top + bitmapHeight) - offsetY;
+		top = offsetY;
+	}
+	else if (top >= surfaceHeight + offsetY)
+	{
+		return false;
+	}
+	
+	if (top + bitmapHeight >= surfaceHeight + offsetY)
+	{
+		bitmapHeight = (surfaceHeight + offsetY) - top;
+	}
+	if (left + bitmapWidth >= surfaceWidth + offsetX)
+	{
+		bitmapWidth = (offsetX + surfaceWidth) - left;
+	}
+	
+	if (bitmapWidth <= 0 || bitmapHeight <= 0)
+	{
+		return false; ////Even a solitary pixel is two-dimensional! 
+	}
+	
+	return true;
 }
 
 void SurfaceHandler::clearDisplay()

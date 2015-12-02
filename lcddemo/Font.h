@@ -36,6 +36,8 @@ public:
 	char getEndCharacter();
 	unsigned char* getBitmap(char character);
 	
+	~Font();
+	
 private:
 	unsigned char *letterBitmap;
 	int getSpaceCharacterWidth();

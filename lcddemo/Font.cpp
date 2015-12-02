@@ -4,7 +4,6 @@ Font::Font(const FONT_INFO &font) : fontInfo(font)
 { 
 	letterBitmap = new unsigned char[fontInfo.height * 1];  // HACK: assumes width of font is 8 bits or less
 }
-// FIXME: letterBitmap is orphaned, need a destructor
 
 int Font::getCharacterHeight()
 {
@@ -63,4 +62,9 @@ unsigned char* Font::getBitmap(char character)
 		letterBitmap[i] = fontInfo.p_character_bitmaps[fontInfo.p_character_descriptor[character - getStartCharacter()].offset + i];
 	}
 	return letterBitmap;
+}
+
+Font::~Font()
+{ 
+	delete [] letterBitmap;
 }

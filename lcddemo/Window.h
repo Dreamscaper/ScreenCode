@@ -13,7 +13,10 @@ class Window
 	all else is transparent.
 	*/
 	Window(SurfaceHandler &surfacehandler, Font &consolefont, int windowPositionX, int windowPositionY, int width, int height, int backgroundColor);
-	void addTextToLine(const char*, int, int, bool);
+	~Window();
+	unsigned char* bmap;
+	bool findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bitmapHeight);
+	void addTextToLine(const char* thingToSay, int cursorX, int cursorY, bool invert);
 	void clearWindow();
 	void displayWindow();
 	private:
@@ -25,4 +28,5 @@ class Window
 	int windowHeight;
 	int BGcolor;
 };
-#endif
+#endif
+
