@@ -13,7 +13,6 @@ Window::Window(SurfaceHandler& surfac, Font& fnt, int wposX, int wposY, int widt
 	bmap = new unsigned char[font.getCharacterHeight()];
 	clearWindow();
 	
-	
 }
 
 void Window::addTextToLine(const char* thingToSay, int cursorX, int cursorY, bool invert)
@@ -37,11 +36,16 @@ void Window::addTextToLine(const char* thingToSay, int cursorX, int cursorY, boo
 		std::cout << "Orig X=" << cursorX << ", Y=" << cursorY << ", width=" << width << ", height=" << height <<  std::endl;
 		if (Window::findTrueCoordinates(cursorX, cursorY, width, height, invert))
 		{
-			std:cout << "True X=" << cursorX << ", Y=" << cursorY << ", width=" << width << ", height=" << height << std::endl;
+			std::cout << "True X=" << cursorX << ", Y=" << cursorY << ", width=" << width << ", height=" << height << std::endl;
 //				std::cout << cursorX << " " << width << std::endl;
-			surface.addBitmapToBuffer(cursorX,cursorY, width, height, invert, bmap);
-		}
+			surface.addBitmapToBuffer(cursorX, cursorY, width, height, invert, bmap);
 			cursorX += width; // This is broken
+		}
+		else
+		{
+			cursorX += font.getCharacterWidth(thingToSay[i]); // This is broken
+		}
+			
 			i++;
 	}
 
@@ -143,7 +147,7 @@ bool Window::findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bit
 
 void Window::clearWindow()
 {
-	std::cout << "clearWindow(" << windowPosX << "," << windowPosY << "," << windowWidth << "," << windowHeight << ")" << std::endl;
+	//std::cout << "clearWindow(" << windowPosX << "," << windowPosY << "," << windowWidth << "," << windowHeight << ")" << std::endl;
 	if (BGcolor == 1)
 	{
 		surface.addRectangleToBuffer(windowPosX, windowPosY, windowWidth, windowHeight, false);
