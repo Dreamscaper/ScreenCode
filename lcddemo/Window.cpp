@@ -1,4 +1,5 @@
 #include "Window.h"
+using namespace std;
 
 Window::Window(SurfaceHandler& surfac, Font& fnt, int wposX, int wposY, int width, int height, int background) :  font(fnt), surface(surfac)
 {
@@ -20,8 +21,9 @@ void Window::addTextToLine(const char* thingToSay, int cursorX, int cursorY, boo
 	int i = 0;
 	int width = 0;
 	int height = 0;
-	
+
 	cursorX = cursorX + windowPosX;
+	cursorY = cursorY + windowPosY;
 	while (thingToSay[i] != '\0')
 	{
 		for (int j = 0;j < font.getCharacterHeight(); j++)
@@ -32,65 +34,116 @@ void Window::addTextToLine(const char* thingToSay, int cursorX, int cursorY, boo
 		width = font.getCharacterWidth(thingToSay[i]);
 		height = font.getCharacterHeight();
 		
-
-		if (Window::findTrueCoordinates(cursorX, cursorY, width, height))
+		std::cout << "Orig X=" << cursorX << ", Y=" << cursorY << ", width=" << width << ", height=" << height <<  std::endl;
+		if (Window::findTrueCoordinates(cursorX, cursorY, width, height, invert))
 		{
-			surface.addBitmapToBuffer(cursorX, cursorY, width, height, invert, bmap);
+			std:cout << "True X=" << cursorX << ", Y=" << cursorY << ", width=" << width << ", height=" << height << std::endl;
+//				std::cout << cursorX << " " << width << std::endl;
+			surface.addBitmapToBuffer(cursorX,cursorY, width, height, invert, bmap);
 		}
-			cursorX = cursorX + width; // This is broken
+			cursorX += width; // This is broken
 			i++;
 	}
 
 }
 
-bool Window::findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bitmapHeight)
+bool Window::findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bitmapHeight, bool invertStat)
 {
-	if (bitmapWidth <= 0 || bitmapHeight <= 0)
+	int leftVal = left;
+	int topVal = top;
+	int bW = bitmapWidth;
+	int bH = bitmapHeight;
+
+
+	std::cout << "BITMAP LEFT: " << leftVal;
+	std::cout << " BITMAP RIGHT: " << (leftVal + bW);
+	
+	std::cout << " BITMAP WIDTH: " << bW;
+	std::cout << " WINDOWPOSX: " << windowPosX;
+	std::cout << " WINDOW_WIDTH: " << windowWidth << std::endl;
+	
+	
+	if (bW <= 0 || bH <= 0)
 	{
+		return false; ////Even a solitary pixel is two-dimensional! 
+	}
+	if (leftVal < windowPosX)
+	{
+		if ((leftVal + bW) < windowPosX)
+		{
+			std::cout << "Width or Height not acceptable value, upon First Check. Returned false." << std::endl;
+			return false;
+		}
+		bW = (left + bW) - windowPosX;
+		leftVal = windowPosX;
+		surface.clipLeft(bmap, bitmapWidth - bW, bitmapWidth, bH, invertStat);
 		
-		return false; ////Even a solitary pixel is two-dimensional! 
+		//left = leftVal;
+		//top	= topVal;
+		//bitmapWidth = bW;
+		//bitmapHeight = bH;
+		
+		std::cout << "LEFT_CLIPPING: ";
+		std::cout << " New Bitmap Width: " << bW;
+		std::cout << " New Left Val: " << leftVal;
+		std::cout << " Left Clipping: " << (8 - bW) << endl;
 	}
-	if (left < windowPosX)
+	else if (leftVal >= (windowWidth + windowPosX))
 	{
-		bitmapWidth = (left + bitmapWidth) - windowPosX;
-		left = windowPosX;
-		surface.clipRight(bmap, 8 - bitmapWidth, bitmapHeight);
+		std::cout << "Left was greater than bW. Returned false." << std::endl;
+		return false;
 	}
-	else if (left > windowWidth + windowPosX)
+	
+	
+	if ((leftVal + bW) >= (windowWidth + windowPosX))
+	{
+		int newBW = (windowPosX + windowWidth) - (leftVal);
+		surface.clipRight(bmap, (bW - newBW ),bW, bH, invertStat);
+		bW = newBW;
+		// left = leftVal;
+		// top	= topVal;
+		// bitmapWidth = bW;
+		// bitmapHeight = bH;
+		std::cout << "RIGHT_CLIPPING: ";
+		std::cout << " New Bitmap Width: " << bW;
+		std::cout << " New Left Val: " << leftVal;
+		std::cout << " Right Clipping: " << (8 - bW) << endl;
+	}
+	/*
+	if (topVal < windowPosY)
+	{
+		bH = (topVal + bH) - (windowPosY);
+		topVal = windowPosY;
+	}
+	else if (topVal > windowHeight + windowPosY)
 	{
 		return false;
 	}
 	
-	if (top < windowPosY)
+	if (topVal + bH > windowHeight + windowPosY)
 	{
-		bitmapHeight = (top + bitmapHeight) - windowPosY;
-		top = windowPosY;
+		bH = (windowHeight + windowPosY) - topVal;
 	}
-	else if (top >= windowHeight + windowPosY)
-	{
-		return false;
-	}
+	*/
 	
-	if (top + bitmapHeight >= windowHeight + windowPosY)
-	{
-		bitmapHeight = (windowHeight + windowPosY) - top;
-	}
-	if (left + bitmapWidth >= windowWidth + windowPosX)
-	{
-		bitmapWidth = (windowPosX + windowWidth) - left;
-		surface.clipRight(bmap, bitmapWidth, bitmapHeight);
-	}
 	
-	if (bitmapWidth <= 0 || bitmapHeight <= 0)
+	if (bW <= 0 || bH <= 0)
 	{
 		return false; ////Even a solitary pixel is two-dimensional! 
+		std::cout << "Width or Height not acceptable value, upon Second Check. Returned false." << std::endl;
 	}
+	
+	left = leftVal;
+	top	= topVal;
+	bitmapWidth = bW;
+	bitmapHeight = bH;
 	
 	return true;
 }
 
 void Window::clearWindow()
 {
+	std::cout << "clearWindow(" << windowPosX << "," << windowPosY << "," << windowWidth << "," << windowHeight << ")" << std::endl;
 	if (BGcolor == 1)
 	{
 		surface.addRectangleToBuffer(windowPosX, windowPosY, windowWidth, windowHeight, false);

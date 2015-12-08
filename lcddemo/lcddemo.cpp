@@ -9,12 +9,12 @@ BitmapImages bmaps(BatteryBitmapInfo);
 
 int main()
 {
-	Window window2(surface, font, 4, 4, 50, 50, 0);
-	//window2.addTextToLine("Menu", 2, 2, false);
+	Window window1(surface, font, 0, 0, 96, 96, 1);
+	Window window2(surface, font, 15, 15,37, 44, 0);
 
-	//surface.addBitmapToBuffer(5, 5, BatteryBitmapInfo.width, BatteryBitmapInfo.height, false, bmaps.getBatteryBitmap1(2));
-	//surface.addBitmapToBuffer(5 + BatteryBitmapInfo.width, 5, BatteryBitmapInfo.width, BatteryBitmapInfo.height, false, bmaps.getBatteryBitmap2(2));
-	window2.addTextToLine("HalloThar", -2,1, true);
+	window2.addTextToLine("HalloThere", 5,0, true);
+	
+	//surface.addBitmapToBuffer(10, 10, 4, font.getCharacterHeight(), false, font.getBitmap('T'));
 	surface.drawDisplay();
 	//TO FIX: Windows share one Frame Buffer...keep track of each one's contents somehow
 }

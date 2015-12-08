@@ -24,6 +24,7 @@ public:
 	BitmapImages(const BITMAP_IMAGE_INFO &image);
 	unsigned char* getBatteryBitmap1(int frame); ///Between 1 and 10
 	unsigned char* getBatteryBitmap2(int frame); ///Between 1 and 10
+
 private:
 	unsigned char *bmpImage;
 };

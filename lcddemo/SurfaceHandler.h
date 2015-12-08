@@ -3,7 +3,7 @@
 
 
 #include "MemoryLCD.h"
-
+#include "BitmapImages.h"
 
 #define SCREENWIDTH 96  ///NOTE: These values must match the screen's actual dimensions as defined in MemoryLCD, and SCREENWIDTH % 8 must equal 0.
 #define SCREENHEIGHT 96
@@ -39,9 +39,13 @@ class SurfaceHandler
 
 	void addCircleToBuffer(int center, bool invertStatus);
 	void addRectangleToBuffer(int left, int top, int width, int height, bool invertStatus);
+	void addBitmapToBuffer(int left, int top, int width, int height, bool invertStatus, unsigned char pattern);
 	void addBitmapToBuffer(int left, int top, int width, int height, bool invertStatus, unsigned char bitmap []);
-	void clipLeft(unsigned char bitmap [], int amount, int height);
-	void clipRight(unsigned char bitmap [], int amount, int height);
+	void clipLeft(unsigned char* bitmap, int amount, int width, int height, bool invertStatus);
+	
+	//<summary>This is a really lame comment</summary>
+		
+	void clipRight(unsigned char* bitmap, int amount, int width, int height, bool invertStatus);
 	bool findTrueCoordinates(int& left, int& top, int offsetX, int offsetY, int surfaceWidth, int surfaceHeight, int& bitmapWidth, int& bitmapHeight);
 	void drawDisplay();
 	void clearDisplay();

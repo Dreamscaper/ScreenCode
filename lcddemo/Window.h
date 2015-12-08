@@ -15,7 +15,7 @@ class Window
 	Window(SurfaceHandler &surfacehandler, Font &consolefont, int windowPositionX, int windowPositionY, int width, int height, int backgroundColor);
 	~Window();
 	unsigned char* bmap;
-	bool findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bitmapHeight);
+	bool findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bitmapHeight, bool invertStat);
 	void addTextToLine(const char* thingToSay, int cursorX, int cursorY, bool invert);
 	void clearWindow();
 	void displayWindow();
