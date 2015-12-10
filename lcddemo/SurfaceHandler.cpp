@@ -350,9 +350,21 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 
 void SurfaceHandler::clipLeft(unsigned char* bitmap, int amount, int width, int height, bool invertStatus)
 {
+	if (amount >  8)
+	{
+		amount = 8;
+		std::cout << "amount was greater than 8" << std::endl;
+	}
+	if (amount < 0)
+	{
+		amount = 0;
+		std::cout << "amount was less than 0" << std::endl;
+		return;
+	}
 	for (int i = 0; i < height; i++)
 	{
 		bitmap[i] = (bitmap[i] << amount);
+		std::cout << "LeftClip Bitmap[i] is: " << + bitmap[i] << std::endl;
 	}
 	
 }
@@ -384,7 +396,7 @@ void SurfaceHandler::clipRight(unsigned char* bitmap, int amount, int width, int
 	}
 	for (int i = 0; i < height; i++)
 	{
-		bitmap[i] = ((bitmap[i] >> amount) << amount);
+		bitmap[i] = (bitmap[i] >> amount) << (amount + (8 - (amount + width)));
 		std::cout << "RightClip Bitmap[i] is: " << + bitmap[i] << std::endl;
 	}
 }
@@ -499,9 +511,21 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 	}
 	else
 	{
-		if (width == width % 8)
+		
+		/*if (width == (width % 8))
 		{
-			if ((width - (8 - leftShiftValue)) > 0)
+			if ((leftShiftValue + width) > 8 || (rightShiftValue + width) > 8)
+			{
+				bytesNeeded = 2;
+			}
+			else
+			{
+				bytesNeeded = 1;
+			}
+		}*/
+		if (width == (width % 8))
+		{
+			if (((width % 8) - (8 - leftShiftValue)) > 0)
 			{
 				bytesNeeded = (width / 8) + 2;
 			}
@@ -531,7 +555,6 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 		{
 			if (x == 0) ///Acting on the first byte in a line
 			{
-				
 				if (invertStatus)
 				{
 					SurfaceHandler::lineBuffer[startByteIndex] = ((MASK >> leftShiftValue) & (bitmap[y] >> leftShiftValue)) | ((frameBuffer[top + y][startByteIndex]) & (MASK << (8 - leftShiftValue)));
@@ -542,13 +565,14 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 				}
 				if (x == (bytesNeeded - 1))
 				{
+					std::cout << "HERE" << std::endl;
 					if (invertStatus)
 					{
-						SurfaceHandler::lineBuffer[endByteIndex] = ((MASK << rightShiftValue) & SurfaceHandler::lineBuffer[endByteIndex]) | ((SurfaceHandler::frameBuffer[top + y][startByteIndex]) & (~(MASK << rightShiftValue)));//(MASK >> (leftShiftValue + width)));
+						SurfaceHandler::lineBuffer[endByteIndex] = ((MASK << rightShiftValue) & SurfaceHandler::lineBuffer[endByteIndex]) | ((SurfaceHandler::frameBuffer[top + y][endByteIndex]) & (~(MASK << rightShiftValue)));//(MASK >> (leftShiftValue + width)));
 					}
 					else
 					{
-						SurfaceHandler::lineBuffer[endByteIndex] = ((MASK << rightShiftValue) & SurfaceHandler::lineBuffer[endByteIndex]) ^ (((SurfaceHandler::frameBuffer[top + y][startByteIndex])) & (~(MASK << rightShiftValue))); ///& (MASK >> ((leftShiftValue + width))));
+						SurfaceHandler::lineBuffer[endByteIndex] = ((MASK << rightShiftValue) & SurfaceHandler::lineBuffer[endByteIndex]) ^ (((SurfaceHandler::frameBuffer[top + y][endByteIndex])) & (~(MASK << rightShiftValue))); ///& (MASK >> ((leftShiftValue + width))));
 					}
 					SurfaceHandler::frameBuffer[top + y][endByteIndex] = lineBuffer[endByteIndex];
 				}
@@ -556,14 +580,26 @@ void SurfaceHandler::addBitmapToBuffer(int left, int top, int width, int height,
 			}
 			else if (x == (bytesNeeded - 1))
 			{
+				unsigned char temp = bitmap[y];
+				if (width < 8)
+				{
+					std::cout << "THERE" << std::endl; ///THIS IS THE FAILURE CONDITION I BELIEVE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+					///bitmap[y] = bitmap[y] >> 2; ////I DONT KNOW WHAT THE DEAL IS WITH THE NUMBER 2, but this fixes the 'o' for these cases. Somehow this number bust be mathematically derived.
+					bitmap[y] = bitmap[y] >> 3; /////////The number three fixes the problems with the 'H'. Using these two data points, we can find the function that will work for whatever letter is placed wherever. So I hope. 
+				}
 				if (invertStatus)
 				{
-					SurfaceHandler::lineBuffer[endByteIndex] = ((MASK << rightShiftValue) & (bitmap[y] << rightShiftValue)) | ((frameBuffer[top + y][endByteIndex]) & (MASK >> (8 - rightShiftValue)));
+					SurfaceHandler::lineBuffer[endByteIndex] = ((MASK << rightShiftValue) & ((bitmap[y]) << rightShiftValue) ) | ((SurfaceHandler::frameBuffer[top + y][endByteIndex]) & (~(MASK << rightShiftValue)));
 				}
 				else
 				{
-					SurfaceHandler::lineBuffer[endByteIndex] = (((MASK << rightShiftValue) & ((~bitmap[y]) << rightShiftValue)) ^ ((~(frameBuffer[top + y][endByteIndex])) & (MASK >> (8 - rightShiftValue))) ^ ((~(MASK << rightShiftValue)) & frameBuffer[top + y][endByteIndex])) & ((MASK << rightShiftValue) | frameBuffer[top + y][endByteIndex]);
+					SurfaceHandler::lineBuffer[endByteIndex] = (((MASK << rightShiftValue) & ((~bitmap[y]) << rightShiftValue)) ^ ((~(SurfaceHandler::frameBuffer[top + y][endByteIndex])) & (MASK >> (8 - rightShiftValue))) ^ ((~(MASK << rightShiftValue)) & SurfaceHandler::frameBuffer[top + y][endByteIndex])) & ((MASK << rightShiftValue) | SurfaceHandler::frameBuffer[top + y][endByteIndex]);
 				}
+				if (width < 8)
+				{
+					bitmap[y] = temp;
+				}
+
 				SurfaceHandler::frameBuffer[top + y][endByteIndex] = lineBuffer[endByteIndex];
 			}
 			else

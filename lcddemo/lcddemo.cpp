@@ -9,13 +9,19 @@ BitmapImages bmaps(BatteryBitmapInfo);
 
 int main()
 {
-	Window window1(surface, font, 0, 0, 96, 96, 0);
-	for (int i = 0; i < 49; i++)
+	//Window window1(surface, font, 0, 0, 96, 96, 0);
+	for (int i = 0; i < 50; i++)
 	{
-		Window window2(surface, font, i, i,35,35, 1);
-		window2.addTextToLine("HalloThere",-4,0, true);
+		Window window2(surface, font,i,i, 35, 35, 1);
+		window2.addTextToLine("HalloThere", -3, 0, true);
 		surface.drawDisplay();
 	}
+	///Window window2(surface, font, 7, 7,35,35, 1);
+	///window2.addTextToLine("HalloThere",-3,0, true);
+	///surface.drawDisplay();
+		
+		
+
 		
 	//Window window2(surface, font, 15, 15,35, 35, 1);
 

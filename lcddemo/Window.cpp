@@ -59,12 +59,12 @@ bool Window::findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bit
 	int bH = bitmapHeight;
 
 
-	std::cout << "BITMAP LEFT: " << leftVal;
-	std::cout << " BITMAP RIGHT: " << (leftVal + bW);
-	
-	std::cout << " BITMAP WIDTH: " << bW;
-	std::cout << " WINDOWPOSX: " << windowPosX;
-	std::cout << " WINDOW_WIDTH: " << windowWidth << std::endl;
+	//std::cout << "BITMAP LEFT: " << leftVal;
+	//std::cout << " BITMAP RIGHT: " << (leftVal + bW);
+	//
+	//std::cout << " BITMAP WIDTH: " << bW;
+	//std::cout << " WINDOWPOSX: " << windowPosX;
+	//std::cout << " WINDOW_WIDTH: " << windowWidth << std::endl;
 	
 	
 	if (bW <= 0 || bH <= 0)
@@ -75,26 +75,26 @@ bool Window::findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bit
 	{
 		if ((leftVal + bW) < windowPosX)
 		{
-			std::cout << "Width or Height not acceptable value, upon First Check. Returned false." << std::endl;
+			//std::cout << "Width or Height not acceptable value, upon First Check. Returned false." << std::endl;
 			return false;
 		}
 		bW = (left + bW) - windowPosX;
 		leftVal = windowPosX;
-		surface.clipLeft(bmap, bitmapWidth - bW, bitmapWidth, bH, invertStat);
+		surface.clipLeft(bmap, bitmapWidth - bW, bW, bH, invertStat);
 		
 		//left = leftVal;
 		//top	= topVal;
 		//bitmapWidth = bW;
 		//bitmapHeight = bH;
 		
-		std::cout << "LEFT_CLIPPING: ";
-		std::cout << " New Bitmap Width: " << bW;
-		std::cout << " New Left Val: " << leftVal;
-		std::cout << " Left Clipping: " << (8 - bW) << endl;
+		//std::cout << "LEFT_CLIPPING: ";
+		//std::cout << " New Bitmap Width: " << bW;
+		//std::cout << " New Left Val: " << leftVal;
+		//std::cout << " Left Clipping: " << bitmapWidth - bW << endl;
 	}
 	else if (leftVal >= (windowWidth + windowPosX))
 	{
-		std::cout << "Left was greater than bW. Returned false." << std::endl;
+		//std::cout << "Left was greater than bW. Returned false." << std::endl;
 		return false;
 	}
 	
@@ -102,16 +102,16 @@ bool Window::findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bit
 	if ((leftVal + bW) >= (windowWidth + windowPosX))
 	{
 		int newBW = (windowPosX + windowWidth) - (leftVal);
-		surface.clipRight(bmap, (bW - newBW ),bW, bH, invertStat);
+		surface.clipRight(bmap, (bW - newBW),newBW, bH, invertStat);
 		bW = newBW;
 		// left = leftVal;
 		// top	= topVal;
 		// bitmapWidth = bW;
 		// bitmapHeight = bH;
-		std::cout << "RIGHT_CLIPPING: ";
-		std::cout << " New Bitmap Width: " << bW;
-		std::cout << " New Left Val: " << leftVal;
-		std::cout << " Right Clipping: " << (8 - bW) << endl;
+		//std::cout << "RIGHT_CLIPPING: ";
+		//std::cout << " New Bitmap Width: " << bW;
+		//std::cout << " New Left Val: " << leftVal;
+		//std::cout << " Right Clipping: " << (bW - newBW) << endl;
 	}
 	/*
 	if (topVal < windowPosY)
@@ -134,7 +134,7 @@ bool Window::findTrueCoordinates(int& left, int& top, int& bitmapWidth, int& bit
 	if (bW <= 0 || bH <= 0)
 	{
 		return false; ////Even a solitary pixel is two-dimensional! 
-		std::cout << "Width or Height not acceptable value, upon Second Check. Returned false." << std::endl;
+		//std::cout << "Width or Height not acceptable value, upon Second Check. Returned false." << std::endl;
 	}
 	
 	left = leftVal;
